@@ -4,10 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.watercanapporderms.dto.Message;
+import com.revature.watercanapporderms.dto.OrderDTO;
 import com.revature.watercanapporderms.model.Order;
 import com.revature.watercanapporderms.service.OrderService;
 
@@ -23,17 +24,14 @@ public class OrderController {
 	@ApiOperation("OrderApi")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Order Success", response = Message.class),
 			@ApiResponse(code = 400, message = "Order failed") })
-	public ResponseEntity<Object> orderCans(@RequestParam("orderCans") int orderCans, @RequestParam("userId") int userId,@RequestParam("userName") String userName) {
+	public ResponseEntity<Object> orderCans(@RequestBody OrderDTO orderDTO) {
 		String errorMessage = null;
 		Message message = null;
 		String status = null;
 		Order result =null;
 		try {
-			Order order = new Order();
-			order.setOrderCans(orderCans);
-			order.setUserId(userId);
-			order.setUserName(userName);
-			result=orderService.orderStock(order);
+			
+			result=orderService.orderStock(orderDTO);
 			status = "Success";
 		} catch (Exception e) {
 			errorMessage = e.getMessage();
